@@ -95,6 +95,7 @@ public struct TableBuilerConfiguration {
             get { return _shouldSpringLoad as? ((UITableView, IndexPath, UISpringLoadedInteractionContext) -> Bool) }
         }
         private var _shouldSpringLoad: Any?
+    
     }
     
     
@@ -136,6 +137,26 @@ public struct TableBuilerConfiguration {
     public var didSelectedSectionIndex: ((UITableView, String, Int) -> Int)?
     
     public var indexTitles: [String]?
+    
+    public var didScroll: ((UIScrollView) -> Void)?
+    
+    public var didScrollToTop: ((UIScrollView) -> Void)?
+    
+    public var willBeginDragging: ((UIScrollView) -> Void)?
+    
+    public var willEndDragging: ((UIScrollView, CGPoint, UnsafeMutablePointer<CGPoint>) -> Void)?
+    
+    public var didEndDragging: ((UIScrollView, Bool) -> Void)?
+    
+    public var didEndDecelerating: ((UIScrollView) -> Void)?
+    
+    public var willBeginDecelerating: ((UIScrollView) -> Void)?
+    
+    public var didEndScrollingAnimation: ((UIScrollView) -> Void)?
+    
+    public var shouldScrollToTop: ((UIScrollView) -> Bool)?
+    
+    public var didChangeAdjustedContentInset: ((UIScrollView) -> Void)?
     
     private let configuration: TableBuilerConfiguration!
     
@@ -403,6 +424,47 @@ extension TableBuilder: UITableViewDelegate {
     @available(iOS 11.0, *)
     public func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
         return self.row(at: indexPath)?.shouldSpringLoad?(tableView, indexPath, context) ?? false
+    }
+    
+
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.didScroll?(scrollView)
+    }
+    
+    public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        self.didScrollToTop?(scrollView)
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.willBeginDragging?(scrollView)
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        self.willEndDragging?(scrollView, velocity, targetContentOffset)
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.didEndDragging?(scrollView, decelerate)
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.didEndDecelerating?(scrollView)
+    }
+    
+    public func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        self.willBeginDecelerating?(scrollView)
+    }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        self.didEndScrollingAnimation?(scrollView)
+    }
+    
+    public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        return self.shouldScrollToTop?(scrollView) ?? true
+    }
+    
+    public func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        self.didChangeAdjustedContentInset?(scrollView)
     }
 }
 
