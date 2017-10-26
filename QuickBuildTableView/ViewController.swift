@@ -49,7 +49,7 @@ class ViewController: UIViewController {
                         }
                         
                         row.canEdit = { _,_ in return true }
-                        row.editActions = { tableView, IndexPath in
+                        row.editActions = { tableView, indexPath in
                             let action = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "DEL", handler: { [weak self] (action, indexPath) in
                                 
                                 if let group = self?.builder.group(at: indexPath.section) {
@@ -58,8 +58,8 @@ class ViewController: UIViewController {
                                         tableView.deleteSections(IndexSet.init(integer: indexPath.section), with: .fade)
                                     }
                                     else {
-                                        group.rows.remove(at: IndexPath.row)
-                                        tableView.deleteRows(at: [IndexPath], with: .fade)
+                                        group.rows.remove(at: indexPath.row)
+                                        tableView.deleteRows(at: [indexPath], with: .fade)
                                     }
                                 }
                             })
