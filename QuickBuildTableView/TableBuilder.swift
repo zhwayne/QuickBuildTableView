@@ -18,7 +18,7 @@ public struct TableBuilerConfiguration {
 }
 
 
-@available(iOS 9.0, *)
+@available(iOS 8.0, *)
 @objc public class TableBuilder: NSObject {
     
     public final class Row {
