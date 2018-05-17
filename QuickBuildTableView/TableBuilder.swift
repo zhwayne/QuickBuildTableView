@@ -342,7 +342,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return self.row(at: indexPath)?.willSelected?(tableView, indexPath)
+        return self.row(at: indexPath)?.willSelected?(tableView, indexPath) ?? indexPath
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -350,7 +350,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath)
+        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath) ?? indexPath
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -358,7 +358,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return self.row(at: indexPath)?.shouldHighLight?(tableView, indexPath) ?? false
+        return self.row(at: indexPath)?.shouldHighLight?(tableView, indexPath) ?? true
     }
     
     public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -388,7 +388,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
-        return self.row(at: indexPath)?.shouldShowMenu?(tableView, indexPath) ?? false
+        return self.row(at: indexPath)?.shouldShowMenu?(tableView, indexPath) ?? true
     }
     
     public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
@@ -396,7 +396,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return self.row(at: indexPath)?.shouldIndentWhileEditing?(tableView, indexPath) ?? false
+        return self.row(at: indexPath)?.shouldIndentWhileEditing?(tableView, indexPath) ?? true
     }
     
     public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
@@ -404,7 +404,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return self.row(at: indexPath)?.canPerformAction?(tableView, action, indexPath, sender) ?? false
+        return self.row(at: indexPath)?.canPerformAction?(tableView, action, indexPath, sender) ?? true
     }
     
     public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
@@ -423,7 +423,7 @@ extension TableBuilder: UITableViewDelegate {
     
     @available(iOS 11.0, *)
     public func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
-        return self.row(at: indexPath)?.shouldSpringLoad?(tableView, indexPath, context) ?? false
+        return self.row(at: indexPath)?.shouldSpringLoad?(tableView, indexPath, context) ?? true
     }
     
 
@@ -467,4 +467,3 @@ extension TableBuilder: UITableViewDelegate {
         self.didChangeAdjustedContentInset?(scrollView)
     }
 }
-
