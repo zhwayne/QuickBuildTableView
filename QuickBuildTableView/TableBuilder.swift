@@ -74,7 +74,7 @@ public struct TableBuilerConfiguration {
         public var performAction: ((UITableView, Selector, IndexPath, Any?) -> Void)?
         
         public var canPerformAction: ((UITableView, Selector, IndexPath, Any?) -> Bool)?
-
+        
         @available(iOS 11.0, *)
         public var leadingSwipeActionsConfiguration: ((UITableView, IndexPath) -> UISwipeActionsConfiguration?)? {
             set { _leadingSwipeActionsConfiguration = leadingSwipeActionsConfiguration }
@@ -95,7 +95,7 @@ public struct TableBuilerConfiguration {
             get { return _shouldSpringLoad as? ((UITableView, IndexPath, UISpringLoadedInteractionContext) -> Bool) }
         }
         private var _shouldSpringLoad: Any?
-    
+        
     }
     
     
@@ -134,7 +134,7 @@ public struct TableBuilerConfiguration {
     
     public var groups: [Group] = []
     
-    public var didSelectedSectionIndex: ((UITableView, String, Int) -> Int)?
+    public var sectionIndex: ((UITableView, String, Int) -> Int)?
     
     public var indexTitles: [String]?
     
@@ -227,7 +227,7 @@ extension TableBuilder {
                 return self.configuration.useSwipeActionsConfiguration
             }
         }
-
+        
         return super.responds(to: aSelector)
     }
 }
@@ -272,7 +272,7 @@ extension TableBuilder: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return self.didSelectedSectionIndex!(tableView, title, index)
+        return self.sectionIndex!(tableView, title, index)
     }
     
     public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -282,12 +282,12 @@ extension TableBuilder: UITableViewDataSource {
 
 
 extension TableBuilder: UITableViewDelegate {
-
+    
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let defaultHeight: CGFloat = tableView.style == .plain ? 0 : UITableViewAutomaticDimension
         return self.group(at: section)?.headerHeight?(tableView, section) ?? defaultHeight
     }
-
+    
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let defaultHeight: CGFloat = tableView.style == .plain ? 0 : UITableViewAutomaticDimension
         return self.group(at: section)?.footerHeight?(tableView, section) ?? defaultHeight
@@ -324,7 +324,7 @@ extension TableBuilder: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
         self.group(at: section)?.didEndDisplayingFooter?(tableView, view, section)
     }
-
+    
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.row(at: indexPath)?.height?(tableView, indexPath) ?? UITableViewAutomaticDimension
     }
@@ -350,7 +350,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath) ?? indexPath
+        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -388,7 +388,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
-        return self.row(at: indexPath)?.shouldShowMenu?(tableView, indexPath) ?? true
+        return self.row(at: indexPath)?.shouldShowMenu?(tableView, indexPath) ?? false
     }
     
     public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
@@ -396,7 +396,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return self.row(at: indexPath)?.shouldIndentWhileEditing?(tableView, indexPath) ?? true
+        return self.row(at: indexPath)?.shouldIndentWhileEditing?(tableView, indexPath) ?? false
     }
     
     public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
@@ -404,7 +404,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return self.row(at: indexPath)?.canPerformAction?(tableView, action, indexPath, sender) ?? true
+        return self.row(at: indexPath)?.canPerformAction?(tableView, action, indexPath, sender) ?? false
     }
     
     public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
@@ -423,10 +423,10 @@ extension TableBuilder: UITableViewDelegate {
     
     @available(iOS 11.0, *)
     public func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
-        return self.row(at: indexPath)?.shouldSpringLoad?(tableView, indexPath, context) ?? true
+        return self.row(at: indexPath)?.shouldSpringLoad?(tableView, indexPath, context) ?? false
     }
     
-
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.didScroll?(scrollView)
     }
