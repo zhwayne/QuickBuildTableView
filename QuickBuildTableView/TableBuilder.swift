@@ -350,7 +350,7 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath)
+        return self.row(at: indexPath)?.willDeselected?(tableView, indexPath) ?? indexPath
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
