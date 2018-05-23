@@ -294,11 +294,13 @@ extension TableBuilder: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return self.group(at: section)?.estimatedHeaderHeight?(tableView, section) ?? UITableViewAutomaticDimension
+        let defaultHeight: CGFloat = CGFloat.leastNormalMagnitude
+        return self.group(at: section)?.estimatedHeaderHeight?(tableView, section) ?? defaultHeight
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return self.group(at: section)?.estimatedFooterHeight?(tableView, section) ?? UITableViewAutomaticDimension
+        let defaultHeight: CGFloat = CGFloat.leastNormalMagnitude
+        return self.group(at: section)?.estimatedFooterHeight?(tableView, section) ?? defaultHeight
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
